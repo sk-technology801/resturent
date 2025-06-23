@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
+     fetch('/api/dishes')
+      .then(res => res.json())
+      .then(data => setDishes(data));
     setLoaded(true);
   }, []);
 
