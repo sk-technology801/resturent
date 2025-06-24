@@ -1,11 +1,19 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) throw new Error("MONGODB_URI not set");
+let isConnected = false;
 
 export const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) return;
+  if (isConnected) return;
 
-  return mongoose.connect(MONGODB_URI);
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: 'restaurant',
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.error('MongoDB connection failed:', error);
+  }
 };

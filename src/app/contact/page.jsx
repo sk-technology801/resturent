@@ -8,10 +8,28 @@ export default function ContactPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Message sent!');
-    setForm({ name: '', email: '', message: '' });
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (res.ok) {
+        alert('Message sent successfully!');
+        setForm({ name: '', email: '', message: '' });
+      } else {
+        alert('Failed to send message.');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Error sending message.');
+    }
   };
 
   return (
@@ -51,6 +69,7 @@ export default function ContactPage() {
             value={form.name}
             onChange={handleChange}
             placeholder="Your Name"
+            required
             className="w-full px-4 py-2 border border-yellow-500 bg-black text-white rounded-md focus:outline-yellow-400"
           />
           <input
@@ -59,6 +78,7 @@ export default function ContactPage() {
             value={form.email}
             onChange={handleChange}
             placeholder="Your Email"
+            required
             className="w-full px-4 py-2 border border-yellow-500 bg-black text-white rounded-md focus:outline-yellow-400"
           />
           <textarea
@@ -67,6 +87,7 @@ export default function ContactPage() {
             onChange={handleChange}
             placeholder="Your Message"
             rows={4}
+            required
             className="w-full px-4 py-2 border border-yellow-500 bg-black text-white rounded-md focus:outline-yellow-400"
           />
           <button
@@ -105,18 +126,16 @@ export default function ContactPage() {
           Find Us Here
         </h2>
         <div className="w-full h-72 rounded-xl overflow-hidden border-4 border-yellow-500">
-        <iframe
-  title="Map"
-  width="100%"
-  height="100%"
-  style={{ border: 0 }}
-  loading="lazy"
-  allowFullScreen
-  referrerPolicy="no-referrer-when-downgrade"
-  src="https://www.google.com/search?q=white+castle+faisalabad&rlz=1C1CHBF_en-GBPK1164PK1164&oq=white+cas&gs_lcrp=EgZjaHJvbWUqBwgCEAAYgAQyEAgAEAAY4wIYsQMYyQMYgAQyEwgBEC4YxwEYsQMYyQMY0QMYgAQyBwgCEAAYgAQyBggDEEUYOTINCAQQABiSAxiABBiKBTIHCAUQABiABDIHCAYQABiABDINCAcQLhivARjHARiABDIWCAgQLhiDARivARjHARixAxiABBiKBTIGCAkQABhA0gEJMTExMzdqMGo0qAIAsAIB&sourceid=chrome&ie=UTF-8"
-/>
-
-          
+          <iframe
+            title="Map"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13612.816317225874!2d73.0588951!3d31.4154205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39225ce69ae2c0b5%3A0x4cf78a0c2b3f7339!2sWhite%20Castle%20Faisalabad!5e0!3m2!1sen!2s!4v1719145601234!5m2!1sen!2s"
+          />
         </div>
       </section>
     </main>
