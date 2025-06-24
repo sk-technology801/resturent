@@ -1,10 +1,11 @@
-// /lib/mongodb.js
 import mongoose from 'mongoose';
 
-export async function connectDB() {
-  if (mongoose.connections[0].readyState) return;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-  await mongoose.connect(process.env.MONGODB_URI, {
-    dbName: 'restaurant',
-  });
-}
+if (!MONGODB_URI) throw new Error("MONGODB_URI not set");
+
+export const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
+
+  return mongoose.connect(MONGODB_URI);
+};

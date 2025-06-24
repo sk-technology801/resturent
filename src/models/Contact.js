@@ -4,8 +4,7 @@ const contactSchema = new mongoose.Schema({
   name: String,
   email: String,
   message: String,
-}, {
-  timestamps: true,
+  createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.models.Contact || mongoose.model('Contact', contactSchema);
+export default mongoose.models.Contact || mongoose.model("Contact", contactSchema);
